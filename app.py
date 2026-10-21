@@ -36,7 +36,7 @@ def api():
         return render_template("fel.html", medelande= "kunde inte nå efterfrågan, försök igen om en stund."),502
 
     if svar.status_code==404:
-        return render_template("Fel.hmlt", medelande="Det finns ingen statestik för denna datum.")
+        return render_template("fel.hmlt", medelande="Det finns ingen statestik för denna datum.")
 
     svar.raise_for_status()
 
