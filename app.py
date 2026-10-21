@@ -17,26 +17,26 @@ def api():
     temp=request.form.get("temp")
 
     if None in (ar, manad):
-        return render_templates("fel.html", medelande= "Fyll i år och månad med siffror")
+        return render_templates("fel.html", medde= "Fyll i år och månad med siffror")
 
     if not 2000 <= ar <= 2026:
-        return render_templates("fel.html", medelande= "Året måste vara mellan år 2000 och år 2026")
+        return render_templates("fel.html", medde= "Året måste vara mellan år 2000 och år 2026")
 
     try:                #felsökning när API anropas
         date(ar, manad)
-        return render_template("fel.html", medelande= "Datumet finns inte." ), 400
+        return render_template("fel.html", medde= "Datumet finns inte." ), 400
     except ValueError:
-        return render_template("fel.html", medelande="Datumet finns inte."),400
+        return render_template("fel.html", medde="Datumet finns inte."),400
     URL_ned= (f"https://open-meteo.com/en/docs/historical-weather-api" f"{ar}/{manad}_{nederbord}.json")
     URL_temp= (f"https://open-meteo.com/en/docs/historical-weather-api" f"{ar}/{manad}_{temp}.json")
 
     try:
         svar= requests.get(URL_ned, URL_temp, timeout=5)
     except requests.exeptions.RequestException:
-        return render_template("fel.html", medelande= "kunde inte nå efterfrågan, försök igen om en stund."),502
+        return render_template("fel.html", medde= "kunde inte nå efterfrågan, försök igen om en stund."),502
 
     if svar.status_code==404:
-        return render_template("fel.hmlt", medelande="Det finns ingen statestik för denna datum.")
+        return render_template("fel.hmlt", medde="Det finns ingen statestik för denna datum.")
 
     svar.raise_for_status()
 
