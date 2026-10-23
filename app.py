@@ -1,8 +1,8 @@
 
 from flask import Flask, jsonify, render_template
-from application.func import hamta_vaderdata, medel_temp_per_manad, nederbord_per_manad
-import calendar from datetime import date
-from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
+from application.api import hamta_vaderdata
+from application.func import medel_temp_per_manad, nederbord_per_manad
+
 import requests
 import pandas as pd
 
