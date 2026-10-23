@@ -1,12 +1,7 @@
 
 from flask import Flask, jsonify, render_template
 from application.api import hamta_vaderdata
-from application.funk import medel_temp_per_manad, nederbord_per_manad
-
-import requests
-import pandas as pd
-
-
+from application.funk import nederbord_per_manad, medel_temp_per_manad
 
 
 
