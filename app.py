@@ -8,7 +8,6 @@ import calendar
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 import requests
 import pandas as pd
-from flask import requests, render_template
 
 
 
