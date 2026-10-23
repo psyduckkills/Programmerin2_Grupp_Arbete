@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block title %}Fel{% endblock %}
+
+{% block content %}
+    <div class="alert alert-danger">
+        <h1 class="h3">Något gick fel</h1>
+        <p class="mb-0">{{ meddelande }}</p>
+    </div>
+    <a href="/formular" class="btn btn-primary">Tillbaka till formuläret</a>
+{% endblock %}

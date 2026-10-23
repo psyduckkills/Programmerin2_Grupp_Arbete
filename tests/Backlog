@@ -1,0 +1,34 @@
+Feature vädertrender:
+
+# ==========================================
+# FLASK
+# ==========================================
+
+    Scenario: testa att 404 sidan visas när en endpoint anropas som inte finns.
+        Given att servern får in felaktig endpoint
+        When ett Get meddelande skickas
+        Then html filen 404 ska visas för användaren.
+
+    Scenario: Felmeddelande 500
+        Given att servern får fel
+        When en användare försöker att nå servern
+        Then meddela användaren att en error har skett och ge den en HTTP 500 error
+
+# ==========================================
+# API
+# ==========================================
+
+    Scenario: När den externa API:et som vi förlitar oss på är nere.
+        Given att TBD webbsidan är nere
+        When vårat API requestar en JSON och vi har en cache:ad version av den JSON
+        Then våran API använder cache versionen av JSON istället för att krasha vårat program.
+
+    Scenario: För att göra vårat API så förlitbar som möjligt.
+        Given att vårat API får en API response
+        When API responsen kommer till vår API 
+        Then sparas API responsen som t.ex en JSON till en cache där den senare kan användas.
+
+    Scenario: Testa att API responsen vi får, är en JSON (REST)
+        Given att vi skickar en GET request
+        When vi får en API response
+        Ska vi kolla om den är i format JSON.
