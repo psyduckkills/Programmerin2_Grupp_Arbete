@@ -1,7 +1,7 @@
 
 from flask import Flask, jsonify, render_template
 from application.api import hamta_vaderdata
-from application.func import medel_temp_per_manad, nederbord_per_manad
+from application.funk import medel_temp_per_manad, nederbord_per_manad
 
 import requests
 import pandas as pd
@@ -18,13 +18,17 @@ def index():
 
 @app.route("/vader")
 def vader_overvy():
-    data = medel_temp_per_manad()
-    return render_template("vader.html", data=data)
+    vaderdata=hamta_vaderdata()
+    if vaderdata is None:
+        return render_template("fel.html", meddelande="Kunde inte hämta väderdata.")
+    return render_template("vader.html", data=nederbord_per_manad(vaderdata))
 
 @app.route("/vader/nederbord")
 def nederbord():
-    data = nederbord_per_manad()
-    return render_template("nederbord.html", data=data)
+    vaderdata=hamta_vaderdata
+    if vaderdata is None:
+        return render_template("fel.html", meddelande="Kunde inte hämta väderdata")
+    return render_template("nederbord.html", data=nederbord_per_manad(vaderdata))
 
 @app.route("/api/vader")
 def api_vader():

@@ -1,6 +1,6 @@
 import requests
 
-URL="https://open-meteo.com/en/docs/historical-weather-api"
+URL="https://archive-api.open-meteo.com/v1/archive"
 
 #class ApiFel(Exception):  #När data inte kan hämtas
 
