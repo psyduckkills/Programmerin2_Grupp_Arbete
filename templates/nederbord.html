@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="sv">
+<head><meta charset="UTF-8"><title>Nederbörd</title></head>
+<body>
+    <h1>Nederbörd per månad</h1>
+    <table border="1" cellpadding="5">
+        <tr><th>Månad</th><th>mm (Total nederbörd)</th></tr>
+        {% for item in data %}
+        <tr>
+            <td>{{ item.month }}</td>
+            <td>{{ item.total_precip }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <a href="/">Tillbaka</a>
+</body>
+</html>
+
