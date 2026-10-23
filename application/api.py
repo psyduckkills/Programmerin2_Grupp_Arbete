@@ -7,20 +7,17 @@ URL="https://archive-api.open-meteo.com/v1/archive"
 
 def hamta_vaderdata(lat=59.33, lon=18.07, start="2000-01-01", slut="2026,10,23"):
     params={
-        "latitud":lat,
-        "longitud":lon,
-        "start_datum":"start",
-        "slut_datum":"slut",
-        "daglig": "temperature_2m_mean,precipitation_sum",
-        "tidszon": "Europa/Stockholm",
+        "latitude":lat,
+        "longitude":lon,
+        "start_date":start,
+        "end_date":slut,
+        "daily": "temperature_2m_mean,precipitation_sum",
+        "timezone": "Europa/Stockholm",
     }
 
     try:
         svar= requests.get(URL,params=params, timeout=10)
         svar.raise_for_status()
+        return svar.json()
     except requests.exceptions.RequestException:
         return None
-    print("URL: ",svar.url)
-    print("Status: ",svar.status_code)
-    print("Svar: ", svar.text[:200])
-    return svar.json()

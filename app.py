@@ -16,11 +16,11 @@ def vader_overvy():
     vaderdata=hamta_vaderdata()
     if vaderdata is None:
         return render_template("fel.html", meddelande="Kunde inte hämta väderdata.")
-    return render_template("vader.html", data=nederbord_per_manad(vaderdata))
+    return render_template("vader.html", data=medel_temp_per_manad(vaderdata))
 
 @app.route("/vader/nederbord")
 def nederbord():
-    vaderdata=hamta_vaderdata
+    vaderdata=hamta_vaderdata()
     if vaderdata is None:
         return render_template("fel.html", meddelande="Kunde inte hämta väderdata")
     return render_template("nederbord.html", data=nederbord_per_manad(vaderdata))
@@ -28,6 +28,8 @@ def nederbord():
 @app.route("/api/vader")
 def api_vader():
     data = hamta_vaderdata()
+    if data is None:
+        return jsonify({"fel": "Kunde inte hämta väderdata."})
     return jsonify(data)
 
 @app.errorhandler(404)
