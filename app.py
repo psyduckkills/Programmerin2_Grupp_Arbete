@@ -11,26 +11,27 @@ app = Flask(__name__, template_folder='templates')
 def index():
     return render_template("index.html")
 
-@app.route("/vader")
+@app.route("/vader", methods=["GET"])
 def vader_overvy():
     vaderdata=hamta_vaderdata()
     if vaderdata is None:
         return render_template("fel.html", meddelande="Kunde inte hämta väderdata.")
     return render_template("vader.html", data=medel_temp_per_manad(vaderdata))
 
-@app.route("/vader/nederbord")
+@app.route("/vader/nederbord", methods=["GET"])
 def nederbord():
     vaderdata=hamta_vaderdata()
     if vaderdata is None:
         return render_template("fel.html", meddelande="Kunde inte hämta väderdata")
     return render_template("nederbord.html", data=nederbord_per_manad(vaderdata))
 
-@app.route("/api/vader")
+@app.route("/api/vader", methods=["GET"])
 def api_vader():
     data = hamta_vaderdata()
     if data is None:
         return jsonify({"fel": "Kunde inte hämta väderdata."})
     return jsonify(data)
+
 
 @app.errorhandler(404)
 def page_not_found(e):
