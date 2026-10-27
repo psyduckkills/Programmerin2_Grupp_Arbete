@@ -8,7 +8,7 @@ def till_dataframe(data):    #funktion med pandas för tabell och kolumner
     return df
 
 
-def medel_temp_per_manad(data):  #
+def medel_temp_per_manad(data):
     df = till_dataframe(data)
     medel = df.groupby("manad")["temperature_2m_mean"].mean().round(1)  #delar upp månad och temperatur i olika kolumner 
     return [{"month": manad, "avg_temp": float(temp)} for manad, temp in medel.items()]
