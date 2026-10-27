@@ -23,4 +23,3 @@ def vader(data):
     df = till_dataframe(data)
     summa = df.groupby("manad")["temperature_2m"].sum().round(1)
     return [{"month": manad, "temp": float(ned)} for manad, ned in summa.items()]
-
