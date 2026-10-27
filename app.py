@@ -30,6 +30,7 @@ def medeltemp():
     vaderdata=hamta_vaderdata()
     if vaderdata is None:
         return render_template("fel.html", meddelande="Kunde inte hämta väderdata.")
+    data=medel_temp_per_manad(vaderdata)
     return render_template("medeltemp.html", data=medel_temp_per_manad(vaderdata))
 
 

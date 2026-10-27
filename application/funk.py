@@ -4,7 +4,8 @@ import pandas as pd
 def till_dataframe(data):    #funktion med pandas för tabell och kolumner
     df = pd.DataFrame(data["daily"])
     df["datum"] = pd.to_datetime(df["time"])
-    df["manad"] = df["datum"].dt.strftime("Y-M")  
+    df["manad"] = df["datum"].dt.strftime("%y-%m")
+    df["dag"]= df["datum"].dt.strftime("%y-%m-%d")
     return df
 
 
@@ -21,6 +22,7 @@ def nederbord_per_manad(data):
 
 def vader(data):
     df = till_dataframe(data)
-    summa = df.groupby("manad")["temperature_2m"].sum().round(1)
-    return [{"month": manad, "temp": float(ned)} for manad, ned in summa.items()]
+    resultat=df.groupby("manad").agg ( min_temp=("temperature_2m_min","min"), max_temp=("temperature_2m_max","max")).round(1) #agg kan räkna ut flera saker samtidig
+    resultat= resultat.reset_index().rename(columns={"manad":"month"})
+    return resultat.to_dict("records")
 

@@ -3,13 +3,13 @@ import requests
 URL="https://archive-api.open-meteo.com/v1/archive"
 
 
-def hamta_vaderdata(lat=59.33, lon=18.07, start="2000-01-01", slut="2026-10-23"):  #Funktion som hämtar data, lat och lon är koordinater till stockholm, start och slut är datum
+def hamta_vaderdata(lat=59.33, lon=18.07, start="2024-01-01", slut="2026-10-23"):  #Funktion som hämtar data, lat och lon är koordinater till stockholm, start och slut är datum
     params={
         "latitude":lat,
         "longitude":lon,
         "start_date":start,
         "end_date":slut,
-        "daily": "temperature_2m_mean,precipitation_sum", #mäter temperatur, medelvärde  och  nederbörd och summan av nederbördet
+        "daily": "temperature_2m_mean,temperature_2m_min,temperature_2m_max,precipitation_sum", #mäter temperatur, medelvärde  och  nederbörd och summan av nederbördet
         "timezone": "Europe/Stockholm",
     }
 

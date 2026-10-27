@@ -1,10 +1,10 @@
 <!doctype html>
 <html lang="sv">
-<head><meta charset="UTF-8"><title>Medeltemperatur</title></head>
+<head><meta charset="UTF-8"><title>Väder</title></head>
 <body>
-    <h1>Medeltemperatur per månad</h1>
+    <h1>Väder </h1>
     <table border="1" cellpadding="5">
-        <tr><th>Månad</th><th>°C (Medeltemperatur)</th></tr>
+        <tr><th>Månad</th><th>°C (temperatur)</th></tr>
         {% for item in data %}
         <tr>
             <td>{{ item.month }}</td>
