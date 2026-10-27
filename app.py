@@ -1,7 +1,7 @@
 
 from flask import Flask, jsonify, render_template
 from application.api import hamta_vaderdata
-from application.funk import nederbord_per_manad, medel_temp_per_manad
+from application.funk import nederbord_per_manad, medel_temp_per_manad, vader
 
 
 
@@ -16,7 +16,7 @@ def vader_overvy():
     vaderdata=hamta_vaderdata()
     if vaderdata is None:
         return render_template("fel.html", meddelande="Kunde inte hämta väderdata.")
-    return render_template("vader.html", data=medel_temp_per_manad(vaderdata))
+    return render_template("vader.html", data= vader(vaderdata))
 
 @app.route("/vader/nederbord", methods=["GET"])
 def nederbord():
@@ -24,6 +24,14 @@ def nederbord():
     if vaderdata is None:
         return render_template("fel.html", meddelande="Kunde inte hämta väderdata")
     return render_template("nederbord.html", data=nederbord_per_manad(vaderdata))
+
+@app.route("/medeltemp", methods=["GET"])
+def medeltemp():
+    vaderdata=hamta_vaderdata()
+    if vaderdata is None:
+        return render_template("fel.html", meddelande="Kunde inte hämta väderdata.")
+    return render_template("medeltemp.html", data=medel_temp_per_manad(vaderdata))
+
 
 @app.route("/api/vader", methods=["GET"])
 def api_vader():

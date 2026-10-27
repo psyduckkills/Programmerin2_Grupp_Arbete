@@ -18,3 +18,9 @@ def nederbord_per_manad(data):
     df = till_dataframe(data)
     summa = df.groupby("manad")["precipitation_sum"].sum().round(1)
     return [{"month": manad, "total_precip": float(ned)} for manad, ned in summa.items()]
+
+def vader(data):
+    df = till_dataframe(data)
+    summa = df.groupby("manad")["temperature_2m"].sum().round(1)
+    return [{"month": manad, "temp": float(ned)} for manad, ned in summa.items()]
+
