@@ -37,7 +37,7 @@ def medeltemp():
 def api_vader():
     data = hamta_vaderdata()
     if data is None:
-        return jsonify({"fel": "Kunde inte hämta väderdata."})
+        return render_template("500.html")
     return jsonify(data)
 
 
