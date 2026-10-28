@@ -1,7 +1,9 @@
 import pytest
+import requests
 
 from app import app
-
+from unittest.mock import patch
+from application.api import hamta_vaderdata
 
 @pytest.fixture  
 def klient(): 
@@ -18,3 +20,14 @@ def test_saknas_endpoint(klient):    #@app.errorhandler(404) finns i app.py som 
     assert svar.status_code == 404   #kollar om endpoint /finns-inte ger http status kod 404.
     assert b"Page not Found 404" in svar.data #kollar att "Page not Found 404" finns i html data i vår 404.html. b sträng används när svaret är av typen byte.
 
+@patch("application.api.requests.get")  #@patch för att ersätta vanliga request.get med en mock
+def test_server_fel(mock_get):
+    mock_response = mock_get.return_value 
+
+    mock_response.status.code = "500"
+    mock_response.raise_for_status.side_effect = (
+        requests.HTTPError("500 server Error")
+    )
+
+    with pytest.raises(requests.exceptions.HTTPError):
+        mock_response.raise_for_status()
