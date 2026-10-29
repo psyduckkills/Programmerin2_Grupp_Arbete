@@ -38,14 +38,3 @@ def test_hamta_vaderdata(mock_get):
 
     print("data =", data)
     print("type =", type(data))
-  
-"""
-def test_GET_vader(klient): #kollar igenom om POST response är i rätt format
-    svar = klient.get("/api/vader")
-
-    assert svar.status_code == 200
-    assert svar.mimetype == "application/json"
-
-    data = svar.get_json()
-    assert data["city"] == "Stockholm"
-"""
