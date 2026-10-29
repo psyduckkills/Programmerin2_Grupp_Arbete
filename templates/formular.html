@@ -1,0 +1,56 @@
+
+<div class="card shadow-sm p-4 my-4">
+<title>Välj en datum att filtrera på</title>
+
+<form method="POST" action="/datum" class="w-100">
+
+    <div class="row g-3">
+
+        <div class="col-md-4">
+            <select class="form-select form-select-lg" aria-label="First select" id="day" name="day">
+                <option value="" selected disabled>Välj en dag</option>
+                {% for d in range(1, 32) %}
+                    <option value="{{ d }}">{{ d }}</option>
+                {% endfor %}
+        
+            </select>
+        </div>
+
+        <div class="col-md-4">
+            <select class="form-select form-select-lg" aria-label="Second select" id="month" name="month">
+                <option selected>Välj en månad</option>
+                <option value="1">Januari</option>
+                <option value="2">Februari</option>
+                <option value="3">Mars</option>
+                <option value="4">April</option>
+                <option value="5">Maj</option>
+                <option value="6">Juni</option>
+                <option value="7">Juli</option>
+                <option value="8">Augusti</option>
+                <option value="9">September</option>
+                <option value="10">Oktober</option>
+                <option value="11">November</option>
+                <option value="12">December</option>
+            </select>
+        </div>
+
+        <div class="col-md-4">
+            <select class="form-select form-select-lg" aria-label="Third select" id="year" name="year">
+                <option selected>Välj Årtal</option>
+                <option value="2024">2024</option>
+                <option value="2025">2025</option>
+                <option value="2026">2026</option>
+
+            </select>
+        </div>
+
+        <div>
+
+            <button type="submit" class="btn btn-primary btn-lg w-100">
+                Filtrera väderdata
+            </button>
+        </div>
+    </div>
+
+</form>
+</div>
