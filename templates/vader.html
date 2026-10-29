@@ -2,17 +2,7 @@
 <html lang="sv">
 <head><meta charset="UTF-8"><title>Väder</title></head>
 <body>
-    <h1>Väder </h1>
-    <table border="1" cellpadding="5">
-        <tr><th>Månad</th><th>°C (Lägsta temperatur)</th><th>°C (Högsta temperatur)</th></tr>
-        {% for item in data %}
-        <tr>
-            <td>{{ item.month }}</td>
-            <td>{{ item.min_temp }}</td>
-            <td>{{ item.max_temp }}</td>
-        </tr>
-        {% endfor %}
-    </table>
+    
     <a href="/">Tillbaka</a>
 </body>
     <head>
