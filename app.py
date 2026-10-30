@@ -114,7 +114,7 @@ def filtrerad_datum():
                 raise ValueError(
                     "Det finns ingen väderdata för detta datum."
                 )
-
+            # en counter för att hitta den rätta indexet i listorna
             i = dates.index(selected_date)
 
             # Hitta den rätta informationen med index
