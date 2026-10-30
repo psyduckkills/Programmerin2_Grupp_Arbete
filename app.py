@@ -12,7 +12,7 @@ from application.funk import (
     vader,
 )
 
-app = Flask(__name__, template_folder='templates')
+app = Flask(__name__, template_folder='templates', static_folder='static')
 
 
 @app.route("/")
@@ -50,10 +50,10 @@ def nederbord():
     else:
         df = till_dataframe(vaderdata)
         df = df.rename(columns={
-                               "manad": "Månad",
+                               "dag": "Dag",
                                "precipitation_sum": "Total nederbörd per mm"
                                })
-        fig = px.bar(df, x="Månad", y="Total nederbörd per mm", title="Nederbörd per Månad")
+        fig = px.line(df, x="Dag", y="Total nederbörd per mm", title="Nederbörd per Månad")
         chart_html = fig.to_html(full_html=False, include_plotlyjs="cdn")
         return render_template("nederbord.html", data=nederbord_per_manad(vaderdata), chart=chart_html)
 
@@ -68,10 +68,10 @@ def medeltemp():
     else:
         df = till_dataframe(vaderdata)
         df = df.rename(columns={
-            "manad": "Månad",
+            "dag": "Dag",
             "temperature_2m_mean": "Medeltemp"
             })
-        fig = px.line(df, x="Månad", y="Medeltemp", title="Medeltemperatur per Månad")
+        fig = px.line(df, x="Dag", y="Medeltemp", title="Medeltemperatur per Månad")
         chart_html = fig.to_html(full_html=False, include_plotlyjs="cdn")
         return render_template("medeltemp.html", data=medel_temp_per_manad(vaderdata), chart = chart_html)
 
@@ -167,6 +167,8 @@ def api_vader():
         return render_template("500.html")
     else:
         return jsonify(data)
+
+
 
 
 @app.errorhandler(404)
