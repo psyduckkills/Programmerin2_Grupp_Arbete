@@ -1,8 +1,9 @@
 
-import plotly.express as px
-from flask import Flask, jsonify, render_template, request
 from datetime import date
+
+import plotly.express as px
 import plotly.graph_objects as go
+from flask import Flask, jsonify, render_template, request
 
 from application.api import hamta_vaderdata
 from application.funk import (
