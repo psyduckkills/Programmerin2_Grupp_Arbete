@@ -1,9 +1,10 @@
+from unittest.mock import patch
+
 import pytest
 import requests
 
 from app import app
-from unittest.mock import patch
-from application.api import hamta_vaderdata
+
 
 @pytest.fixture  
 def klient(): 
