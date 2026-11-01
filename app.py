@@ -1,8 +1,8 @@
 
 from datetime import date
-
 import plotly.express as px
 import plotly.graph_objects as go
+import pandas as pd
 from flask import Flask, jsonify, render_template, request
 
 from application.api import hamta_vaderdata
@@ -19,13 +19,6 @@ app = Flask(__name__, template_folder='templates', static_folder='static')
 @app.route("/")
 def index():
     return render_template("index.html")
-'''
-sample_data = pd.DataFrame({
-    "category": ["A", "B", "C", "D"],
-    "value": [42, 17, 35, 29],
-})
-
-'''
 
 
 @app.route("/vader", methods=["GET"])
@@ -41,7 +34,9 @@ def vader_overvy():
             })
         fig = px.line(df, x="Dag", y="temperatur", title="Väder")
         chart_html = fig.to_html(full_html=False, include_plotlyjs="cdn")
-        return render_template("vader.html", data= vader(vaderdata), chart=chart_html)
+        return render_template("vader.html", data= vader(vaderdata), 
+                               chart=chart_html)
+        
 
 @app.route("/vader/nederbord", methods=["GET"])
 def nederbord():
@@ -54,16 +49,27 @@ def nederbord():
                                "dag": "Dag",
                                "precipitation_sum": "Total nederbörd per mm"
                                })
-        fig = px.line(df, x="Dag", y="Total nederbörd per mm", title="Nederbörd per Månad")
+        df["Datum"] = pd.to_datetime(vaderdata["daily"]["time"])
+
+        start = request.args.get("start")
+        slut = request.args.get("slut")
+
+        if start:
+            df = df[df["Datum"] >= pd.to_datetime(start)]
+        if slut:
+            df = df[df["Datum"] <= pd.to_datetime(slut)]
+        
+        fig = px.line(df, x="Datum", y="Total nederbörd per mm", title="Nederbörd per Månad")
         chart_html = fig.to_html(full_html=False, include_plotlyjs="cdn")
-        return render_template("nederbord.html", data=nederbord_per_manad(vaderdata), chart=chart_html)
+        return render_template("nederbord.html", data=nederbord_per_manad(vaderdata), 
+                               chart=chart_html, start=start, slut=slut)
+    
 
 @app.route("/medeltemp", methods=["GET"])
 def medeltemp():
     vaderdata=hamta_vaderdata()
 
     if vaderdata is None:
-        medel_temp_per_manad(vaderdata)
         return render_template("fel.html", meddelande="Kunde inte hämta väderdata.")
 
     else:
@@ -72,9 +78,20 @@ def medeltemp():
             "dag": "Dag",
             "temperature_2m_mean": "Medeltemp"
             })
-        fig = px.line(df, x="Dag", y="Medeltemp", title="Medeltemperatur per Månad")
+        df["Datum"] = pd.to_datetime(vaderdata["daily"]["time"])
+        
+        start = request.args.get("start")
+        slut = request.args.get("slut")
+        
+        if start:
+            df = df[df["Datum"] >= pd.to_datetime(start)]
+        if slut:
+            df = df[df["Datum"] <= pd.to_datetime(slut)]
+        
+        fig = px.line(df, x="Datum", y="Medeltemp", title="Medeltemperatur per Månad")
         chart_html = fig.to_html(full_html=False, include_plotlyjs="cdn")
-        return render_template("medeltemp.html", data=medel_temp_per_manad(vaderdata), chart = chart_html)
+        return render_template("medeltemp.html", data=medel_temp_per_manad(vaderdata), 
+                               chart = chart_html, start=start, slut=slut)
 
 @app.route("/datum", methods=["GET", "POST"])
 def filtrerad_datum():
