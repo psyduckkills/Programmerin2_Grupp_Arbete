@@ -23,12 +23,13 @@ def test_saknas_endpoint(klient):    #@app.errorhandler(404) finns i app.py som 
 
 @patch("application.api.requests.get")  #@patch för att ersätta vanliga request.get med en mock
 def test_server_fel(mock_get):
-    mock_response = mock_get.return_value 
-
-    mock_response.status.code = "500"
+    mock_response = mock_get.return_value #mock_get mockar en requests.get anrop. mock_response är mocken som returneras av mock_get.
+    mock_response.status_code = 500
     mock_response.raise_for_status.side_effect = (
         requests.HTTPError("500 server Error")
     )
 
     with pytest.raises(requests.exceptions.HTTPError):
         mock_response.raise_for_status()
+    assert mock_response is not None
+    assert mock_response.status_code == 500 
