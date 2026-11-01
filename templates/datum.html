@@ -15,9 +15,9 @@
     {% endif %}
 
     {% if selected_date %}
-        <h4 class="mt-4">Väder för {{ selected_date }}</h4>
-        <p>Medeltemperatur: {{ mean_temp }} °C</p>
-        <p>Nederbörd: {{ precipitation }} mm</p>
+        <h4 class="mt-4", style="text-align: center;">Väder för {{ selected_date }}</h4>
+        <p style="text-align: center;">Medeltemperatur: {{ mean_temp }} °C</p>
+        <p style="text-align: center;">Nederbörd: {{ precipitation }} mm</p>
     {% endif %}
 
     {% if plot_html %}

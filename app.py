@@ -153,7 +153,7 @@ def filtrerad_datum():
 
             fig.update_layout(
                 title=f"Väder den {selected_date}",
-                xaxis_title="Temperaturtyp",
+                xaxis_title="Temperatur typ",
                 yaxis_title="Temperatur (°C)",
                 template="plotly_white"
             )
@@ -186,7 +186,6 @@ def api_vader():
         return render_template("500.html")
     else:
         return jsonify(data)
-
 
 
 
