@@ -1,8 +1,9 @@
 
 from datetime import date
+
+import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
-import pandas as pd
 from flask import Flask, jsonify, render_template, request
 
 from application.api import hamta_vaderdata
@@ -185,7 +186,6 @@ def api_vader():
         return render_template("500.html")
     else:
         return jsonify(data)
-
 
 
 
