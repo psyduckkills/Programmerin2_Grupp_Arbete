@@ -24,5 +24,5 @@ def vader(data):
     df = till_dataframe(data)
     resultat=df.groupby("manad").agg ( min_temp=("temperature_2m_min","min"), max_temp=("temperature_2m_max","max")).round(1) #agg kan räkna ut flera saker samtidig
     resultat= resultat.reset_index().rename(columns={"manad":"month"})
-    return resultat.to_dict("records")
+    return resultat
 
