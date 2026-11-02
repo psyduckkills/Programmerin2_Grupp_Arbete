@@ -4,7 +4,7 @@ from application.api import hamta_vaderdata
 
 
 @patch("application.api.requests.get")  #@patch för att ersätta vanliga request.get med en mock
-def test_hamta_vaderdata(mock_get): 
+def test_mock_hamta_vaderdata(mock_get): 
     mock_get.return_value.json.return_value = { #fejk data som tas emot
 
         "latitude":59.33,
@@ -33,6 +33,21 @@ def test_hamta_vaderdata(mock_get):
     assert "daily" in data
 
     assert isinstance(data, dict)  # isinstance kollar om ett värde är just den här typen av data som specifieras i koden. I detta fall data == dict
+    assert isinstance(data["latitude"], (int, float))
+    assert isinstance(data["daily"]["temperature_2m_mean"], list)
+
+    print("data =", data)
+    print("type =", type(data))
+
+def test_hamta_vaderdata():
+    data = hamta_vaderdata()  #
+
+    assert data is not None
+    assert "latitude" in data
+    assert "longitude" in data
+    assert "daily" in data
+
+    assert isinstance(data, dict)
     assert isinstance(data["latitude"], (int, float))
     assert isinstance(data["daily"]["temperature_2m_mean"], list)
 
