@@ -14,9 +14,9 @@ def hamta_vaderdata(lat=59.33, lon=18.07, start="2024-01-01", slut="2026-10-23")
     }
 
     try:
-        svar= requests.get(URL,params=params, timeout=10) #get skickar anropet, parms bygger ihop URL,anrop ger upp efter 10sek
-        svar.raise_for_status() #400 och 500 skapas här 
-        return svar.json()
+        vaderdata = requests.get(URL,params=params, timeout=10) #get skickar anropet, parms bygger ihop URL,anrop ger upp efter 10sek
+        vaderdata.raise_for_status() #400 och 500 skapas här 
+        return vaderdata.json()
     except requests.exceptions.RequestException as fel:
         print("FEL:", fel)
         return None

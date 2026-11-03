@@ -39,8 +39,8 @@ def test_mock_hamta_vaderdata(mock_get):
     print("data =", data)
     print("type =", type(data))
 
-def test_hamta_vaderdata():
-    data = hamta_vaderdata()  #
+def test_hamta_vaderdata(): #själva testet som testar funktionen hamta_vaderdata() och kollar att den returnerar data i rätt format. Detta test kommer att göra ett riktigt anrop till API:et.
+    data = hamta_vaderdata()  
 
     assert data is not None
     assert "latitude" in data
