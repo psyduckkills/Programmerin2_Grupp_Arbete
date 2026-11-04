@@ -36,7 +36,7 @@ Projektet använder följande tekniker:
 ### 1. Klona projektet
 
 ```bash
-git clone <https://github.com/psyduckkills/Programmerin2_Grupp_Arbete.git>
+git clone https://github.com/psyduckkills/Programmerin2_Grupp_Arbete.git
 ```
 
 ### 2. Skapa en venv för att begränsa programmet till en separat miljö som inte har kontakt med resten av din dator.
