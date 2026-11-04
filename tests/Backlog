@@ -21,14 +21,14 @@ Feature vädertrender:
     Scenario: När den externa API:et som vi förlitar oss på är nere.
         Given att Open-meteo servern är nere
         When vårat API requestar en JSON och vi har en cache:ad version av den JSON
-        Then våran API använder cache versionen av JSON istället för att förhindra att vårat api kraschar.
+        Then våran API använder cache versionen av JSON istället för att förhindra att vårat api inte fungerar.
 
     Scenario: För att göra vårat API så förlitbar som möjligt.
         Given att vårat API får en POST response
         When POST responsen kommer till vår API 
         Then sparas API responsen som t.ex en JSON till en cache där den senare kan användas.
 
-    Scenario: Testa att API responsen vi får, är en JSON (REST)
+    Scenario: Testa att API responsen vi får är en JSON
         Given att vi skickar en GET request
         When vi får en API response
         Ska vi kolla om den är i format JSON.

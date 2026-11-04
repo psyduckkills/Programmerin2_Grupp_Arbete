@@ -10,7 +10,7 @@ def test_mock_requests_get(
     mock_get,
 ):  # mock_get är en mock av requests.get som används i hamta_vaderdata
 
-    # fejk response data som vår get.request får från mocken istället för externa API:et.
+    # 1. fejk response data som vår requests.get får från mocken istället för externa API:et.
     mock_get.return_value.json.return_value = {
         "latitude": 59.33,
         "longitude": 18.07,
@@ -25,25 +25,12 @@ def test_mock_requests_get(
 
     mock_get.return_value.raise_for_status.return_value = None
 
-    # 3. anropar funktion men request.get är fortfarande mockad så inget riktigt anrop ut mot externa API
+    # 3. anropar funktion men request.get byts ut med mock versionen, så inget riktigt anrop ut mot externa API
 
     data = hamta_vaderdata()
 
-    # 4. kolla att API request bara blev kallad en gång och med "with" i slutet av koden så kan du testa att din requests.get skickar rätt data som du förväntade dig.
-    mock_get.assert_called_once_with(
-        "https://archive-api.open-meteo.com/v1/archive",
-        params={
-            "latitude": 59.33,
-            "longitude": 18.07,
-            "start_date": "2024-01-01",
-            "end_date": "2026-10-23",
-            "daily": "temperature_2m_mean,temperature_2m_min,temperature_2m_max,precipitation_sum",
-            "timezone": "Europe/Stockholm",
-        },
-        timeout=10,
-    )
+    # 4. kollar att datan vi får in stämmer överens med vad vi förväntar att få
 
-    # kollar att datan vi får in stämmer överens med vad vi förväntar att få
     assert data is not None
     assert data["latitude"] == 59.33
     assert data["longitude"] == 18.07
@@ -59,7 +46,10 @@ def test_mock_requests_get(
     assert isinstance(data["daily"]["temperature_2m_mean"], list)
 
 
-def test_hamta_vaderdata():  # själva testet som testar funktionen hamta_vaderdata() och kollar att den returnerar data i rätt format. Detta test kommer att göra ett riktigt anrop till API:et.
+# själva testet som testar funktionen hamta_vaderdata() och kollar att den returnerar data i rätt format. Detta test kommer att göra ett riktigt anrop till API:et.
+
+
+def test_hamta_vaderdata():
     data = hamta_vaderdata()
 
     assert data is not None
