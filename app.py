@@ -1,4 +1,3 @@
-
 from datetime import date
 
 import pandas as pd
@@ -14,7 +13,7 @@ from application.funk import (
     vader,
 )
 
-app = Flask(__name__, template_folder='templates', static_folder='static')
+app = Flask(__name__, template_folder="templates", static_folder="static")
 
 
 @app.route("/")
@@ -24,32 +23,27 @@ def index():
 
 @app.route("/vader", methods=["GET"])
 def vader_overvy():
-    vaderdata=hamta_vaderdata()
+    vaderdata = hamta_vaderdata()
     if vaderdata is None:
         return render_template("fel.html", meddelande="Kunde inte hämta väderdata.")
     else:
         df = till_dataframe(vaderdata)
-        df = df.rename(columns={
-            "temperature_2m_min": "temperatur",
-            "dag": "Dag"
-            })
+        df = df.rename(columns={"temperature_2m_min": "temperatur", "dag": "Dag"})
         fig = px.line(df, x="Dag", y="temperatur", title="Väder")
         chart_html = fig.to_html(full_html=False, include_plotlyjs="cdn")
-        return render_template("vader.html", data= vader(vaderdata), 
-                               chart=chart_html)
-        
+        return render_template("vader.html", data=vader(vaderdata), chart=chart_html)
+
 
 @app.route("/vader/nederbord", methods=["GET"])
 def nederbord():
-    vaderdata=hamta_vaderdata()
+    vaderdata = hamta_vaderdata()
     if vaderdata is None:
         return render_template("fel.html", meddelande="Kunde inte hämta väderdata")
     else:
         df = till_dataframe(vaderdata)
-        df = df.rename(columns={
-                               "dag": "Dag",
-                               "precipitation_sum": "Total nederbörd per mm"
-                               })
+        df = df.rename(
+            columns={"dag": "Dag", "precipitation_sum": "Total nederbörd per mm"}
+        )
         df["Datum"] = pd.to_datetime(vaderdata["daily"]["time"])
 
         start = request.args.get("start")
@@ -59,40 +53,50 @@ def nederbord():
             df = df[df["Datum"] >= pd.to_datetime(start)]
         if slut:
             df = df[df["Datum"] <= pd.to_datetime(slut)]
-        
-        fig = px.line(df, x="Datum", y="Total nederbörd per mm", title="Nederbörd per Månad")
+
+        fig = px.line(
+            df, x="Datum", y="Total nederbörd per mm", title="Nederbörd per Månad"
+        )
         chart_html = fig.to_html(full_html=False, include_plotlyjs="cdn")
-        return render_template("nederbord.html", data=nederbord_per_manad(vaderdata), 
-                               chart=chart_html, start=start, slut=slut)
-    
+        return render_template(
+            "nederbord.html",
+            data=nederbord_per_manad(vaderdata),
+            chart=chart_html,
+            start=start,
+            slut=slut,
+        )
+
 
 @app.route("/medeltemp", methods=["GET"])
 def medeltemp():
-    vaderdata=hamta_vaderdata()
+    vaderdata = hamta_vaderdata()
 
     if vaderdata is None:
         return render_template("fel.html", meddelande="Kunde inte hämta väderdata.")
 
     else:
         df = till_dataframe(vaderdata)
-        df = df.rename(columns={
-            "dag": "Dag",
-            "temperature_2m_mean": "Medeltemp"
-            })
+        df = df.rename(columns={"dag": "Dag", "temperature_2m_mean": "Medeltemp"})
         df["Datum"] = pd.to_datetime(vaderdata["daily"]["time"])
-        
+
         start = request.args.get("start")
         slut = request.args.get("slut")
-        
+
         if start:
             df = df[df["Datum"] >= pd.to_datetime(start)]
         if slut:
             df = df[df["Datum"] <= pd.to_datetime(slut)]
-        
+
         fig = px.line(df, x="Datum", y="Medeltemp", title="Medeltemperatur per Månad")
         chart_html = fig.to_html(full_html=False, include_plotlyjs="cdn")
-        return render_template("medeltemp.html", data=medel_temp_per_manad(vaderdata), 
-                               chart = chart_html, start=start, slut=slut)
+        return render_template(
+            "medeltemp.html",
+            data=medel_temp_per_manad(vaderdata),
+            chart=chart_html,
+            start=start,
+            slut=slut,
+        )
+
 
 @app.route("/datum", methods=["GET", "POST"])
 def filtrerad_datum():
@@ -108,10 +112,7 @@ def filtrerad_datum():
     vaderdata = hamta_vaderdata()
 
     if vaderdata is None:
-        return render_template(
-            "fel.html",
-            meddelande="Kunde inte hämta väderdata."
-        )
+        return render_template("fel.html", meddelande="Kunde inte hämta väderdata.")
     # tar emot variablerna från Json filen med vår väder data
     daily = vaderdata["daily"]
     dates = daily["time"]
@@ -130,9 +131,7 @@ def filtrerad_datum():
 
             # Letar efter den valda datumet och jämför med JSON datat
             if selected_date not in dates:
-                raise ValueError(
-                    "Det finns ingen väderdata för detta datum."
-                )
+                raise ValueError("Det finns ingen väderdata för detta datum.")
             # en counter för att hitta den rätta indexet i listorna
             i = dates.index(selected_date)
 
@@ -145,23 +144,22 @@ def filtrerad_datum():
             # Skapa Plotly chart
             fig = go.Figure()
 
-            fig.add_trace(go.Bar(
-                x=["Minimum", "Medel", "Maximum"],
-                y=[min_temp, mean_temp, max_temp],
-                marker_color=["#4C78A8", "#F2CF5B", "#E45756"]
-            ))
+            fig.add_trace(
+                go.Bar(
+                    x=["Minimum", "Medel", "Maximum"],
+                    y=[min_temp, mean_temp, max_temp],
+                    marker_color=["#4C78A8", "#F2CF5B", "#E45756"],
+                )
+            )
 
             fig.update_layout(
                 title=f"Väder den {selected_date}",
                 xaxis_title="Temperatur typ",
                 yaxis_title="Temperatur (°C)",
-                template="plotly_white"
+                template="plotly_white",
             )
 
-            plot_html = fig.to_html(
-                full_html=False,
-                include_plotlyjs="cdn"
-            )
+            plot_html = fig.to_html(full_html=False, include_plotlyjs="cdn")
 
         except (ValueError, KeyError) as e:
             error = str(e) or "Kontrollera det valda datumet finns."
@@ -175,7 +173,7 @@ def filtrerad_datum():
         min_temp=min_temp,
         max_temp=max_temp,
         precipitation=precipitation,
-        plot_html=plot_html
+        plot_html=plot_html,
     )
 
 
@@ -188,10 +186,10 @@ def api_vader():
         return jsonify(data)
 
 
-
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template("404.html"), 404
+
 
 @app.errorhandler(500)
 def server_error(e):
@@ -199,5 +197,4 @@ def server_error(e):
 
 
 if __name__ == "__main__":
-    app.run(host='127.0.0.1', port = 5000, debug=True)
-
+    app.run(host="127.0.0.1", port=5000, debug=True)
