@@ -6,7 +6,7 @@ URL = "https://archive-api.open-meteo.com/v1/archive"
 
 
 def hamta_vaderdata(
-    lat=59.33, lon=18.07, start="2024-01-01", slut="2026-11-04"
+    lat=59.33, lon=18.07, start="2024-01-01", slut= None
 ):  # Funktion som hämtar data, lat och lon är koordinater till stockholm, start och slut är datum
 
     # Om inget slutdatum anges används dagens datum
