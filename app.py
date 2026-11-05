@@ -39,41 +39,51 @@ def nederbord():
     vaderdata = hamta_vaderdata()
     if vaderdata is None:
         return render_template("fel.html", meddelande="Kunde inte hämta väderdata")
-    
+
     df = till_dataframe(vaderdata)
-    df = df.rename(columns={"dag": "Dag","precipitation_sum": "Total nederbörd per mm"})
+    df = df.rename(
+        columns={"dag": "Dag", "precipitation_sum": "Total nederbörd per mm"}
+    )
     df["Datum"] = pd.to_datetime(vaderdata["daily"]["time"])
 
     start = request.args.get("start")
     slut = request.args.get("slut")
     error = None
 
-    try:   
+    try:
         start_datum = pd.to_datetime(start) if start else None
         slut_datum = pd.to_datetime(slut) if slut else None
         
-        if start_datum and slut_datum and slut_datum < start_datum:
+        if start_datum and slut_datum < start_datum:
             raise ValueError("Slutdatumet kan inte vara före startdatumet.")
-        
+
         filtrerad = df
         if start_datum:
             filtrerad = filtrerad[filtrerad["Datum"] >= start_datum]
         if slut_datum:
-            filtrerad = filtrerad[filtrerad["Datum"] <= slut_datum]
+                filtrerad = filtrerad[filtrerad["Datum"] >= slut_datum]
         
         if filtrerad.empty:
             raise ValueError("Det finns ingen väderdata för de valda datumen.")
-        
+
         df = filtrerad
-        
+
     except ValueError as e:
         error = str(e)
-        
-    fig = px.line(df, x="Datum", y="Total nederbörd per mm", title="Nederbörd per Månad")
+
+    fig = px.line(
+        df, x="Datum", y="Total nederbörd per mm", title="Nederbörd per Månad"
+    )
     chart_html = fig.to_html(full_html=False, include_plotlyjs="cdn")
-    return render_template("nederbord.html", data=nederbord_per_manad(vaderdata), 
-                               chart=chart_html, start=start, slut=slut, error=error)
-    
+    return render_template(
+        "nederbord.html",
+        data=nederbord_per_manad(vaderdata),
+        chart=chart_html,
+        start=start,
+        slut=slut,
+        error=error,
+    )
+
 
 @app.route("/medeltemp", methods=["GET"])
 def medeltemp():
@@ -81,21 +91,21 @@ def medeltemp():
 
     if vaderdata is None:
         return render_template("fel.html", meddelande="Kunde inte hämta väderdata.")
-    
+
     df = till_dataframe(vaderdata)
-    df = df.rename(columns={"dag": "Dag","temperature_2m_mean": "Medeltemp"})
+    df = df.rename(columns={"dag": "Dag", "temperature_2m_mean": "Medeltemp"})
     df["Datum"] = pd.to_datetime(vaderdata["daily"]["time"])
-            
+
     start = request.args.get("start")
     slut = request.args.get("slut")
-    error = None  
+    error = None
 
-    try:   
+    try:
         start_datum = pd.to_datetime(start) if start else None
         slut_datum = pd.to_datetime(slut) if slut else None
 
-        if start_datum and slut_datum and slut_datum < start_datum:
-            raise ValueError("Slutdatumet kan inte vara före startdatumet.")
+        if start_datum and slut_datum < start_datum:
+                raise ValueError("Slutdatumet kan inte vara före startdatumet.")
 
         filtrerad = df
         if start_datum:
@@ -110,13 +120,18 @@ def medeltemp():
 
     except ValueError as e:
         error = str(e)
-            
-        
+
     fig = px.line(df, x="Datum", y="Medeltemp", title="Medeltemperatur per Månad")
     chart_html = fig.to_html(full_html=False, include_plotlyjs="cdn")
-    return render_template("medeltemp.html", data=medel_temp_per_manad(vaderdata), 
-                                chart = chart_html, start=start, slut=slut ,error=error)
-    
+    return render_template(
+        "medeltemp.html",
+        data=medel_temp_per_manad(vaderdata),
+        chart=chart_html,
+        start=start,
+        slut=slut,
+        error=error,
+    )
+
 
 @app.route("/datum", methods=["GET", "POST"])
 def filtrerad_datum():
