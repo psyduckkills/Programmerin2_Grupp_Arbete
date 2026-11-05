@@ -54,14 +54,14 @@ def nederbord():
         start_datum = pd.to_datetime(start) if start else None
         slut_datum = pd.to_datetime(slut) if slut else None
         
-        if start_datum and slut_datum < start_datum:
+        if start_datum and slut_datum and slut_datum < start_datum:
             raise ValueError("Slutdatumet kan inte vara före startdatumet.")
 
         filtrerad = df
         if start_datum:
             filtrerad = filtrerad[filtrerad["Datum"] >= start_datum]
         if slut_datum:
-                filtrerad = filtrerad[filtrerad["Datum"] >= slut_datum]
+                filtrerad = filtrerad[filtrerad["Datum"] <= slut_datum]
         
         if filtrerad.empty:
             raise ValueError("Det finns ingen väderdata för de valda datumen.")
@@ -104,7 +104,7 @@ def medeltemp():
         start_datum = pd.to_datetime(start) if start else None
         slut_datum = pd.to_datetime(slut) if slut else None
 
-        if start_datum and slut_datum < start_datum:
+        if start_datum and slut_datum and slut_datum < start_datum:
                 raise ValueError("Slutdatumet kan inte vara före startdatumet.")
 
         filtrerad = df
